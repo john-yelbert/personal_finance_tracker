@@ -12,17 +12,15 @@ DATABASE_URL = os.getenv(
 # Create the engine (connection to PostgreSQL)
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 
-# Create a configured "Session" class
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Base class for our models to inherit from
+# Base class for all models to inherit from
 Base = declarative_base()
 
 
 # Dependency for FastAPI routes (ensures session is opened and closed correctly)
 def get_db():
-    db = SessionLocal()
+    db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     try:
-        yield db
+        yield db_session
     finally:
-        db.close()
+        db_session.close()
