@@ -12,6 +12,8 @@ DATABASE_URL = os.getenv(
 # Create the engine - creates a connection to PostgreSQL db in docker
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 
+session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 # Base class for all models to inherit from
 Base = declarative_base()
@@ -19,7 +21,7 @@ Base = declarative_base()
 
 # Dependency for FastAPI routes (ensures session is opened and closed correctly)
 def get_db():
-    db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    db_session = session()
     try:
         yield db_session
     finally:
