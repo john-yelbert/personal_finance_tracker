@@ -9,7 +9,7 @@ DATABASE_URL = os.getenv(
     "postgresql+psycopg2://finance_tracker_user:finance_tracker_pass@localhost:5432/finance_tracker_db"
 )
 
-# Create the engine (connection to PostgreSQL)
+# Create the engine - creates a connection to PostgreSQL db in docker
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 
 
