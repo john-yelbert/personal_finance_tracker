@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: financetracker_db
+    restart: always
+    environment:
+      POSTGRES_USER: finance_tracker_user
+      POSTGRES_PASSWORD: finance_tracker_pass
+      POSTGRES_DB: finance_tracker_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: finance_tracker_backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://finance_tracker_user:finance_tracker_pass@db:5432/finance_tracker_db
+      SECRET_KEY: "supersecretkey"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:
