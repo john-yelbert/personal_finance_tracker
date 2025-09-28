@@ -14,7 +14,6 @@ engine = create_engine(DATABASE_URL, echo=True, future=True)
 
 session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
 # Base class for all models to inherit from
 Base = declarative_base()
 
